@@ -12,9 +12,21 @@ final class RMService {
     static let shared = RMService()
     
     
+    /// Privatized constructor
+    
     private init() {}
     
-    public func execute(_ request: RMRequest, completion: @escaping () -> Void) {
-        
+    
+    /// Send Rick and Morty API Call
+    /// - Parameters:
+    ///   - request: request instance
+    ///   - type: The type of Object we expect to get back
+    ///   - completion: callback with data or error
+    public func execute<T: Codable>(
+        _ request: RMRequest,
+        expecting type: T.Type,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) {
+            
     }
 }
