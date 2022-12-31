@@ -13,5 +13,16 @@ enum RMCharacterStatus: String,Codable {
     case dead = "Dead"
     case `unknown` = "unknown"
     // unknown is blue coz its a keyword in swift so backtick it
+    
+    
+    var text: String {
+        switch self {
+        case .alive, .dead:
+            return rawValue
+            
+        case .unknown:
+            return "Unknown"
+        }
+    }
 }
 
