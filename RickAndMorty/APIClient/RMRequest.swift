@@ -101,7 +101,19 @@ final class RMRequest {
         let trimmed = string.replacingOccurrences(of: Constants.baseUrl+"/", with: "")
         if trimmed.contains("/") {
             let components = trimmed.components(separatedBy: "/")
-            if !components.isEmpty, components.count >= 2 {
+            if !components.isEmpty{
+                let endpointString = components[0]
+            
+                
+                if let rmEndpoint = RMEndpoint(rawValue: endpointString) {
+                    self.init(endpoint: rmEndpoint)
+                    return
+                }
+            }
+            
+        }else if trimmed.contains("?") {
+            let components = trimmed.components(separatedBy: "?")
+            if !components.isEmpty , components.count >= 2{
                 let endpointString = components[0]
                 let queryItemsString = components[1]
                 // value=name&value=name
@@ -113,21 +125,12 @@ final class RMRequest {
                     
                     return URLQueryItem(
                         name: parts[0],
-                        value: parts[1])
+                        value: parts[1]
+                    )
                 })
                 
                 if let rmEndpoint = RMEndpoint(rawValue: endpointString) {
                     self.init(endpoint: rmEndpoint, queryParameters: queryItems)
-                    return
-                }
-            }
-            
-        }else if trimmed.contains("?") {
-            let components = trimmed.components(separatedBy: "?")
-            if !components.isEmpty {
-                let endpointString = components[0]
-                if let rmEndpoint = RMEndpoint(rawValue: endpointString) {
-                    self.init(endpoint: rmEndpoint)
                     return
                 }
             }

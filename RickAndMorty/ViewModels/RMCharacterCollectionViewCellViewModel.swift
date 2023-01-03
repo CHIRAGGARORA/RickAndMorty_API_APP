@@ -20,16 +20,7 @@ final class RMCharacterCollectionViewCellViewModel: Hashable , Equatable{
     private let characterStatus: RMCharacterStatus
     private let characterImageurl: URL?
     
-    
-    static func == (lhs: RMCharacterCollectionViewCellViewModel, rhs: RMCharacterCollectionViewCellViewModel) -> Bool {
-        return lhs.hashValue == rhs.hashValue
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(charactername)
-        hasher.combine(characterStatus)
-        hasher.combine(characterImageurl)
-    }
+
     
     // MARK: - Init
     
@@ -71,6 +62,18 @@ final class RMCharacterCollectionViewCellViewModel: Hashable , Equatable{
         }
         
         task.resume()
+    }
+    
+    // MARK:- Hashable
+    
+    static func == (lhs: RMCharacterCollectionViewCellViewModel, rhs: RMCharacterCollectionViewCellViewModel) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(charactername)
+        hasher.combine(characterStatus)
+        hasher.combine(characterImageurl)
     }
     
     
