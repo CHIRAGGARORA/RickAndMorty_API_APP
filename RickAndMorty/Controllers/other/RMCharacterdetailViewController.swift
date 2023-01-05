@@ -11,7 +11,7 @@ import UIKit
 final class RMCharacterdetailViewController: UIViewController {
     private let viewModel: RMCharacterDetailViewViewModel
     
-    private let detailView = RMCharacterDetailView()
+    private let detailView: RMCharacterDetailView
     
     //MARK: - Init
     
@@ -19,6 +19,7 @@ final class RMCharacterdetailViewController: UIViewController {
     
     init(viewModel: RMCharacterDetailViewViewModel) {
         self.viewModel = viewModel
+        self.detailView = RMCharacterDetailView(frame: .zero, viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,6 +40,9 @@ final class RMCharacterdetailViewController: UIViewController {
             action: #selector(didTapShare)
         )
         addConstraints()
+        
+        detailView.collectionView?.delegate = self
+        detailView.collectionView?.dataSource = self
    }
   
     
@@ -61,4 +65,32 @@ final class RMCharacterdetailViewController: UIViewController {
     }
  
 
+}
+
+// MARK: - CollectionView
+
+
+extension RMCharacterdetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return viewModel.sections.count
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        
+        if indexPath.section == 0 {
+            cell.backgroundColor = .systemPink
+        }else if indexPath.section == 1 {
+            cell.backgroundColor = .systemGreen
+        }else {
+            cell.backgroundColor = .systemBlue
+        }
+        return cell
+    }
 }
