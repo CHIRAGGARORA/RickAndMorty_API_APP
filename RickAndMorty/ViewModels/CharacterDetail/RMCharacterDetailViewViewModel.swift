@@ -11,14 +11,16 @@ import UIKit
 final class RMCharacterDetailViewViewModel {
     private let character: RMCharacter
     
-    enum SectionType: CaseIterable {
-        case photo
-        case information
-        case episodes
+    enum SectionType{
+        case photo(viewModel: RMCharacterPhotoCollectionViewCellViewModel)
+        
+        case information(viewModels: [RMCharacterInfoCollectionViewCellViewModel])
+        
+        case episodes(viewModels: [RMCharacterEpisodeCollectionViewCellViewModel])
         
     }
     
-    public let sections = SectionType.allCases
+    public var sections: [SectionType] = []
     
     // MARK: - Init
     
@@ -27,6 +29,29 @@ final class RMCharacterDetailViewViewModel {
     
     init(character: RMCharacter) {
         self.character = character
+        setUpSections()
+    }
+    private func setUpSections() {
+        sections = [
+            .photo(viewModel: .init()),
+            .information(viewModels: [
+                .init(),
+                .init(),
+                .init(),
+                .init()
+                
+            ]),
+            .episodes(viewModels: [
+                .init(),
+                .init(),
+                .init(),
+                .init()
+                
+            ])
+            
+            
+            
+        ]
     }
     
     private var requestUrl: URL? {
@@ -47,9 +72,9 @@ final class RMCharacterDetailViewViewModel {
         )
         )
         item.contentInsets = NSDirectionalEdgeInsets(top: 0,
-                                                        leading: 0,
-                                                        bottom: 10,
-                                                        trailing: 0)
+                                                     leading: 0,
+                                                     bottom: 10,
+                                                     trailing: 0)
         
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(
@@ -57,10 +82,10 @@ final class RMCharacterDetailViewViewModel {
                 heightDimension: .fractionalHeight(0.5)),
             subitems: [item]
         )
-            
+        
         
         let section = NSCollectionLayoutSection(group: group)
-      
+        
         return section
     }
     public func createEpisodeSectionLayout() -> NSCollectionLayoutSection  {
@@ -70,9 +95,9 @@ final class RMCharacterDetailViewViewModel {
         )
         )
         item.contentInsets = NSDirectionalEdgeInsets(top: 10,
-                                                        leading: 5,
-                                                        bottom: 10,
-                                                        trailing: 8)
+                                                     leading: 5,
+                                                     bottom: 10,
+                                                     trailing: 8)
         
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(
@@ -93,9 +118,9 @@ final class RMCharacterDetailViewViewModel {
         )
         )
         item.contentInsets = NSDirectionalEdgeInsets(top: 2,
-                                                        leading: 2,
-                                                        bottom: 2,
-                                                        trailing: 2)
+                                                     leading: 2,
+                                                     bottom: 2,
+                                                     trailing: 2)
         
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(
@@ -103,12 +128,12 @@ final class RMCharacterDetailViewViewModel {
                 heightDimension: .absolute(150)),
             subitems: [item, item ]
         )
-            
+        
         
         let section = NSCollectionLayoutSection(group: group)
-      
+        
         return section
     }
     
-
+    
 }
