@@ -24,11 +24,25 @@ final class RMEpisodeListViewViewModel: NSObject  {
     
     private var isLoadingMoreEpisodes = false
     
+    private let borderColors: [UIColor] = [
+        .systemBlue,
+        .systemPink,
+        .systemTeal,
+        .systemRed,
+        .systemYellow,
+        .systemMint,
+        .systemIndigo,
+        .systemPurple,
+        .systemOrange,
+        .systemGreen
+    ]
+    
     private var episodes: [RMEpisode] = [] {
         didSet {
-           
+            
             for episode in episodes  {
-                let viewModel = RMCharacterEpisodeCollectionViewCellViewModel(episodeDataUrl: URL(string: episode.url))
+                let viewModel = RMCharacterEpisodeCollectionViewCellViewModel(episodeDataUrl: URL(string: episode.url), borderColor: borderColors.randomElement() ?? .systemBlue)
+                // ?? is known as Coalescing operator which means if nil then take rhs by default
                 
                 if !cellViewModels.contains(viewModel) {
                     
@@ -60,9 +74,9 @@ final class RMEpisodeListViewViewModel: NSObject  {
                 DispatchQueue.main.async {
                     self?.delegate?.didLoadInitialEpisodes()
                 }
-               
-               
-             
+                
+                
+                
             case .failure(let error):
                 print(String(describing: error))
             }
@@ -95,7 +109,7 @@ final class RMEpisodeListViewViewModel: NSObject  {
                 strongSelf.apiInfo = info
                 
                 
-              
+                
                 
                 let originalCount = strongSelf.episodes.count
                 let newCount = moreResults.count
@@ -150,7 +164,7 @@ extension RMEpisodeListViewViewModel: UICollectionViewDataSource, UICollectionVi
         }
         
         cell.configure(with: cellViewModels[indexPath.row])
-       
+        
         return cell
     }
     
@@ -179,12 +193,12 @@ extension RMEpisodeListViewViewModel: UICollectionViewDataSource, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let bounds = UIScreen.main.bounds
-        let width = (bounds.width-30)/2
-       
+        let bounds = collectionView.bounds
+        let width = bounds.width-20
+        
         return CGSize(
             width: width,
-            height: width * 0.8)
+            height: 100)
     }
     
     
