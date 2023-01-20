@@ -33,13 +33,13 @@ final class RMEpisodeDetailViewController: UIViewController , RMEpisodeDetailVie
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(detailView)
-        
+        viewModel.delegate = self
         addConstraints()
         title = "Episode"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
         
-        viewModel.delegate = self
+        
         viewModel.fetchEpisodeData()
 
         
@@ -61,7 +61,7 @@ final class RMEpisodeDetailViewController: UIViewController , RMEpisodeDetailVie
     
     // MARK: - delegate
     
-    func didFetchEpisodedetails() {
+    func didFetchEpisodeDetails() {
         detailView.configure(with: viewModel)
     }
 

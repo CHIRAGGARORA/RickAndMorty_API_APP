@@ -8,18 +8,26 @@
 import UIKit
 
 protocol RMEpisodeDetailViewViewModelDelegate: AnyObject {
-    func didFetchEpisodedetails()
+    func didFetchEpisodeDetails()
 }
 
 final class RMEpisodeDetailViewViewModel{
     private let endpointUrl: URL?
     private var dataTuple: (RMEpisode, [RMCharacter])? {
         didSet {
-            delegate?.didFetchEpisodedetails()
+            delegate?.didFetchEpisodeDetails()
         }
     }
     
-    weak var delegate: RMEpisodeDetailViewViewModelDelegate?
+    enum sectionType {
+        case information(viewModels: [RMEPisodeInfoCollectionViewCellViewModel])
+        case characters(viewModel: [RMCharacterCollectionViewCellViewModel])
+        
+    }
+    
+    public weak var delegate: RMEpisodeDetailViewViewModelDelegate?
+    
+    public private(set) var sections: [sectionType] = []
     
     
     
@@ -49,7 +57,7 @@ final class RMEpisodeDetailViewViewModel{
             case .success(let model):
                 
                 self?.fetchRelatedCharacters(episode: model)
-            case .failure(let failure):
+            case .failure:
                 break
             }
             
@@ -57,12 +65,12 @@ final class RMEpisodeDetailViewViewModel{
     }
     
     private func fetchRelatedCharacters(episode: RMEpisode) {
-        let characterUrls: [URL] = episode.characters.compactMap({
+        let requests: [RMRequest] = episode.characters.compactMap({
             return URL(string: $0)
-        })
-        let requests: [RMRequest] = characterUrls.compactMap({
+        }).compactMap({
             return RMRequest(url: $0)
         })
+        
         
         
         // any number of parallel requests
@@ -78,6 +86,7 @@ final class RMEpisodeDetailViewViewModel{
                 defer{ // defer means it is last thing to run before execution of our program
                     group.leave() // -1
                 }
+                
                 switch result {
                 case .success(let model):
                     characters.append(model)
