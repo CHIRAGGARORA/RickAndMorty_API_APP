@@ -5,6 +5,7 @@
 //  Created by chirag arora on 26/12/22.
 //
 
+import StoreKit
 import SafariServices
 import UIKit
 import SwiftUI
@@ -34,8 +35,8 @@ final class RMSettingsViewController: UIViewController {
                     return RMSettingsCellViewModel(type: $0) { [weak self] option in
                         self?.handleTap(option: option)
                     }
-                    })
-                )
+                })
+            )
             )
         )
         addChild(settingsSwiftUIController)
@@ -68,8 +69,11 @@ final class RMSettingsViewController: UIViewController {
             
         } else if option == .rateApp {
             // show rating prompt
+            if let windowScene = view.window?.windowScene {
+                SKStoreReviewController.requestReview(in: windowScene)
+            }
         }
-    
+        
         
     }
     
