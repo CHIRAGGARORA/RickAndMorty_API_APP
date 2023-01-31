@@ -167,6 +167,7 @@
 			children = (
 				E25BC1392989722D0023936C /* RMSearchView.swift */,
 				E25BC13D2989757B0023936C /* RMNoSearchResultsView.swift */,
+				E25BC142298976020023936C /* RMSearchInputView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -176,7 +177,6 @@
 			children = (
 				E25BC13B298973060023936C /* RMSearchViewViewModel.swift */,
 				E25BC140298975BB0023936C /* RMNoSearchResultsViewViewModel.swift */,
-				E25BC142298976020023936C /* RMSearchInputView.swift */,
 				E25BC144298976320023936C /* RMSearchInputViewViewModel.swift */,
 			);
 			path = Search;
