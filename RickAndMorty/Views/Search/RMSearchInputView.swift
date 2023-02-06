@@ -32,6 +32,8 @@ final class RMSearchInputView: UIView {
         }
     }
     
+    private var stackView: UIStackView?
+    
     
     // MARK: - Init
  
@@ -87,6 +89,7 @@ final class RMSearchInputView: UIView {
     private func createOptionSelectionViews(options: [RMSearchInputViewViewModel.DynamicOptions]) {
         
         let stackView = createOptionStackView()
+        self.stackView = stackView
        
         
         for x in 0..<options.count {
@@ -103,7 +106,7 @@ final class RMSearchInputView: UIView {
         button.setAttributedTitle(
             NSAttributedString(string: option.rawValue,
                                attributes: [
-                                .font: UIFont.systemFont(ofSize: 10,weight: .medium),
+                                .font: UIFont.systemFont(ofSize: 18,weight: .medium),
                                 .foregroundColor: UIColor.label
                                ]
                               ),
@@ -144,6 +147,32 @@ final class RMSearchInputView: UIView {
     public func presentKeyboard() {
         searchBar.becomeFirstResponder()
     }
-   
-
+    
+    public func update(option: RMSearchInputViewViewModel.DynamicOptions, value: String) {
+        //Update options
+        
+        guard let buttons = stackView?.arrangedSubviews as? [UIButton],
+              let allOptions = viewModel?.options,
+              let index = allOptions.firstIndex(of: option) else {
+            return
+        }
+        
+        
+        buttons[index].setAttributedTitle(
+            NSAttributedString(string: value.uppercased(),
+                               attributes: [
+                                .font: UIFont.systemFont(ofSize: 18,weight: .medium),
+                                .foregroundColor: UIColor.link
+                               ]
+                              ),
+            for: .normal
+        )
+        
+        
+        
+        
+        
+    }
+    
+    
 }
